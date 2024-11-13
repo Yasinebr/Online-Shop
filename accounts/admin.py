@@ -12,7 +12,7 @@ class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('email', 'phone_number', 'is_admin')
+    list_display = ('phone_number', 'email', 'is_admin')
     list_filter = ('is_admin',)
 
     fieldsets = (
@@ -25,7 +25,7 @@ class UserAdmin(BaseUserAdmin):
     )
 
     search_fields = ('email', 'full_name')
-    ordering = ('full_name',)
+    ordering = ('phone_number',)
     filter_horizontal = ()
 
 admin.site.unregister(Group)
