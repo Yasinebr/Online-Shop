@@ -1,8 +1,11 @@
+from sys import excepthook
+
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
 from utils import send_otp_code
-from .forms import UserRegisterForm, VerifyCodeForm
+from .forms import UserRegisterForm, VerifyCodeForm, UserLoginForm
 from .models import OtpCode, User
 import random
 
@@ -52,3 +55,23 @@ class UserRegisterVerifyCodeView(View) :
             else:
                 messages.error(request, 'This code is wrong.', 'danger')
             return redirect('home:home')
+
+class UserLoginView(View):
+    form_class = UserLoginForm
+    template_name = 'accounts/login.html'
+
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form':form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(request, phone_number=cd['phone_number'], password=cd['password'])
+            if user is not None:
+                login(request, user)
+                messages.success(request, 'You lagged in successfully', 'success')
+                return redirect('home:home')
+            messages.error(request, 'Phone or password is wrong.', 'danger')
+        return render(request, self.template_name, {'form':form})
