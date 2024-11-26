@@ -1,10 +1,9 @@
-from sys import excepthook
-
-from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
 from utils import send_otp_code
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import UserRegisterForm, VerifyCodeForm, UserLoginForm
 from .models import OtpCode, User
 import random
@@ -75,3 +74,9 @@ class UserLoginView(View):
                 return redirect('home:home')
             messages.error(request, 'Phone or password is wrong.', 'danger')
         return render(request, self.template_name, {'form':form})
+
+class UserLogoutView(LoginRequiredMixin, View):
+    def get(self, request):
+        logout(request)
+        messages.success(request, 'You logged out successfully', 'success')
+        return redirect('home:home')

@@ -136,10 +136,20 @@ AUTH_USER_MODEL = 'accounts.User'
 
 
 # ARVAN CLOUD STORAGE
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+
+        },
+}
+
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_ACCESS_KEY_ID = '465c32a2-4f9a-44bb-b314-661811407303'
 AWS_SECRET_ACCESS_KEY = 'db73b9853c9f943a46db4ecb48ca9dcb58af6c3d41b05bed72e2e6bc34b71fd3'
 AWS_S3_ENDPOINT_URL = 'https://s3.ir-thr-at1.arvanstorage.com'
-AWS_STORAGE_BUCKET_NAME = ' 4new1test'
+AWS_STORAGE_BUCKET_NAME = '4new1test'
 AWS_SERVER_NAME = 's3'
 AWS_S3_FILE_OVERWRITE = False
